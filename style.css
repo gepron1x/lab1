@@ -1,4 +1,4 @@
-/* ==================== Универсальные стили ==================== */
+
 * {
     box-sizing: border-box;
     margin: 0;
@@ -13,7 +13,7 @@ body {
     background: #f9f9f9;
 }
 
-/* ==================== Шапка ==================== */
+/* header */
 header {
     padding: 20px;
     background: #fff;
@@ -37,7 +37,7 @@ nav a:hover {
     color: #e63946;
 }
 
-/* ==================== Основное содержимое ==================== */
+/* main content */
 main {
     padding: 20px;
     max-width: 1400px;
@@ -60,14 +60,12 @@ section img {
     max-width: 100%;
 }
 
-/* Преимущества */
 ul {
     list-style-type: disc;
     padding-left: 30px;
     font-size: 1.1rem;
 }
 
-/* Таблица на главной */
 table {
     border-collapse: collapse;
     width: 100%;
@@ -93,7 +91,7 @@ th {
     color: #e63946;
 }
 
-/* Секции категорий */
+/* categories */
 .category-section {
     margin-bottom: 90px;
 }
@@ -105,7 +103,7 @@ th {
     color: #222;
 }
 
-/* Сетка карточек блюд */
+/* dishes */
 .dishes-grid {
     display: flex;
     flex-wrap: wrap;
@@ -120,6 +118,8 @@ th {
     overflow: hidden;
     width: 260px;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+	display: flex;
+    flex-direction: column;
 }
 
 .dish-card:hover {
@@ -136,6 +136,10 @@ th {
 .dish-info {
     padding: 20px;
     text-align: center;
+	flex-grow: 1;              
+    display: flex;              
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .dish-info h3 {
@@ -161,13 +165,14 @@ th {
     cursor: pointer;
     transition: background 0.3s ease;
     width: 100%;
+	margin-top: auto;
 }
 
 .btn-add:hover {
     background: #c1121f;
 }
 
-/* ==================== Футер ==================== */
+/* footer */
 footer {
     background-color: #000;
     color: #fff;
@@ -185,7 +190,7 @@ footer a:hover {
     color: #e63946;
 }
 
-/* ==================== Адаптивность ==================== */
+/* make it adaptive */
 @media (max-width: 768px) {
     .dish-card {
         width: 100%;
