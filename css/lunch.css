@@ -1,0 +1,76 @@
+
+.dishes-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+
+.dish-card {
+    background: white;
+    border-radius: 35px;
+    padding: 30px 40px;
+    cursor: pointer;
+    filter: drop-shadow(17px 19px 24px rgba(0, 0, 0, 0.13));
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: all 0.3s ease;
+}
+
+.dish-card img {
+    width: 100%;
+    border-radius: 35px;
+    margin-bottom: 15px;
+}
+
+.dish-card .price { font-size: 1.4rem; font-weight: 700; margin: 10px 0; }
+.dish-card .title { font-size: 1.3rem; margin: 8px 0; }
+.dish-card .weight { color: #888; margin-bottom: 15px; }
+
+.dish-card button {
+    background: #f1eee9;
+    border: none;
+    padding: 10px 30px;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-top: auto;
+    transition: background 0.3s;
+}
+
+
+.dish-card:hover {
+    border: 2px solid tomato;
+    padding: 28px 38px;
+}
+
+.dish-card:hover button {
+    background: tomato;
+    color: white;
+}
+
+#active { color: tomato; }
+
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+main { flex: 1; }
+
+
+@media (max-width: 800px) {
+    .dishes-grid { grid-template-columns: repeat(2, 1fr); }
+    nav { justify-content: space-between; }
+    header h1 { text-align: center; }
+}
+
+@media (max-width: 600px) {
+    .dishes-grid { grid-template-columns: 1fr; }
+    nav {
+        flex-direction: column;
+        align-items: center;
+    }
+    nav a { font-size: 1.4rem; margin: 10px 0; }
+    section h2 { text-align: center; }
+}
