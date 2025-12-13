@@ -1,38 +1,74 @@
 // renderDishes.js
-// import dishes from './dishes.js';
+const containers = {
+  soup:    document.querySelector('#soup .dishes-grid'),
+  'main-course':    document.querySelector('#main-course .dishes-grid'),
+  salad:   document.querySelector('#salad .dishes-grid'),
+  drink:   document.querySelector('#drink .dishes-grid'),
+  dessert: document.querySelector('#dessert .dishes-grid')
+};
 
-// Сортируем блюда по названию в каждой категории
-function renderAllDishes() {
-  // Группируем и сортируем по категориям
-  const categories = {
-    soup: document.querySelector('#soups .dishes-grid'),
-    main: document.querySelector('#main .dishes-grid'),
-    drink: document.querySelector('#drinks .dishes-grid')
-  };
+function createCard(dish) {
+  const card = document.createElement('div');
+  card.className = 'dish-card';
+  card.dataset.dish = dish.keyword;
+  card.dataset.kind = dish.kind; // важно для фильтрации
 
+  card.innerHTML = `
+    <img src="images/menu/${dish.image}.jpg" alt="${dish.name}">
+    <h3>${dish.name}</h3>
+    <p class="count">${dish.count}</p>
+    <p class="price">${dish.price} ₽</p>
+  `;
 
-  // Сортировка по алфавиту внутри каждой категории
-  const sortedDishes = [...dishes].sort((a, b) => a.name.localeCompare(b.name, 'ru'));
+  return card;
+}
 
-  sortedDishes.forEach(dish => {
-    const card = document.createElement('div');
-    card.classList.add('dish-card');
-    card.dataset.dish = dish.keyword; // важный data-атрибут
+function renderCategory(category, kind = 'all') {
+  const container = containers[category];
+  if (!container) return;
 
-    card.innerHTML = `
-      <img src="images/${dish.image}" alt="${dish.name}" class="dish-image">
-      <h3 class="dish-name">${dish.name}</h3>
-      <p class="dish-count">${dish.count}</p>
-      <p class="dish-price">${dish.price} ₽</p>
-      <button>Добавить</button>
-    `;
+  container.innerHTML = '';
 
-    // Добавляем в нужную секцию
-    if (categories[dish.category]) {
-      categories[dish.category].appendChild(card);
-    }
+  const filtered = dishes.filter(d => 
+    d.category === category && 
+    (kind === 'all' || kind === '' || d.kind === kind)
+  );
+
+  // Сортировка по алфамильно
+  filtered.sort((a, b) => a.name.localeCompare(b.name, 'ru'));
+
+  filtered.forEach(dish => {
+    container.appendChild(createCard(dish));
   });
 }
 
-// Запускаем при загрузке страницы
-document.addEventListener('DOMContentLoaded', renderAllDishes);
+function renderAll() {
+  renderCategory('soup');
+  renderCategory('main-course');
+  renderCategory('salad');
+  renderCategory('drink');
+  renderCategory('dessert');
+}
+
+// === ФИЛЬТРАЦИЯ ===
+document.addEventListener('click', (e) => {
+  const btn = e.target.closest('.filter-btn');
+  if (!btn) return;
+
+  const filterContainer = btn.closest('section');
+  const category = filterContainer.id; // soup, main, salad и т.д.
+  const kind = btn.dataset.kind;
+
+  // Управление active
+  filterContainer.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  if (btn.dataset.kind === 'all' || btn.classList.contains('active')) {
+    filterContainer.querySelector('[data-kind="all"]').classList.add('active');
+    renderCategory(category, 'all');
+  } else {
+    btn.classList.add('active');
+    renderCategory(category, kind);
+  }
+});
+
+// Изначально показываем всё
+document.addEventListener('DOMContentLoaded', renderAll);

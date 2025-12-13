@@ -167,6 +167,28 @@ legend {
     background: #ddd;
 }
 
+.filter-btn {
+  color: green;
+  background: transparent;
+  border: 2px solid green;
+  padding: 10px 18px;
+  margin: 5px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.filter-btn:hover {
+  background-color: green;
+  color: white;
+}
+
+.filter-btn.active {
+  background-color: green;
+  color: white;
+  font-weight: bold;
+}
+
 .form-buttons button[type="submit"] {
     background: tomato;
     color: white;

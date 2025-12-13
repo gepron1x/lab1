@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Математическая игра</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .game-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 800px;
+            padding: 30px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 2.5em;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin: 25px 0;
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-box {
+            padding: 15px;
+            border-radius: 10px;
+            min-width: 120px;
+        }
+
+        .stat-box h3 {
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+
+        .stat-box p {
+            font-size: 1.8em;
+            font-weight: bold;
+        }
+
+        .correct {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .incorrect {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .level {
+            background: #e3f2fd;
+            color: #0d47a1;
+        }
+
+        .question-container {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 25px 0;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            border: 3px solid #4a90e2;
+        }
+
+        .question {
+            font-size: 2em;
+            margin-bottom: 20px;
+            color: #2c3e50;
+        }
+
+        .options {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 15px 25px;
+            font-size: 1.1em;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+
+        .option-btn {
+            background: #3498db;
+            color: white;
+        }
+
+        .option-btn:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        .action-btn {
+            background: #2ecc71;
+            color: white;
+            margin: 10px;
+            min-width: 150px;
+        }
+
+        .action-btn:hover {
+            background: #27ae60;
+            transform: translateY(-2px);
+        }
+
+        .restart-btn {
+            background: #e74c3c;
+        }
+
+        .restart-btn:hover {
+            background: #c0392b;
+        }
+
+        .exit-btn {
+            background: #95a5a6;
+        }
+
+        .exit-btn:hover {
+            background: #7f8c8d;
+        }
+
+        .controls {
+            margin-top: 25px;
+        }
+
+        .progress-bar {
+            height: 10px;
+            background: #ecf0f1;
+            border-radius: 5px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            background: linear-gradient(90deg, #3498db, #2ecc71);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .result {
+            font-size: 1.2em;
+            margin: 15px 0;
+            padding: 15px;
+            border-radius: 10px;
+            font-weight: bold;
+        }
+
+        .success {
+            background: #d4edda;
+            color: #155724;
+            animation: pulse 0.5s;
+        }
+
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            animation: shake 0.5s;
+        }
+
+        .level-up {
+            background: #fff3cd;
+            color: #856404;
+            font-size: 1.5em;
+            padding: 20px;
+            margin: 20px 0;
+            animation: bounce 1s;
+        }
+
+        .message {
+            background: #e3f2fd;
+            padding: 30px;
+            border-radius: 15px;
+            margin: 20px 0;
+            font-size: 1.3em;
+            line-height: 1.6;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @media (max-width: 768px) {
+            .options {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .stat-box {
+                min-width: auto;
+            }
+            
+            .question {
+                font-size: 1.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <h1>🧮 Математическая игра</h1>
+        
+        <div class="stats">
+            <div class="stat-box level">
+                <h3>Уровень</h3>
+                <p id="level">Начальный</p>
+            </div>
+            <div class="stat-box correct">
+                <h3>Правильно</h3>
+                <p id="correct">0</p>
+            </div>
+            <div class="stat-box incorrect">
+                <h3>Неправильно</h3>
+                <p id="incorrect">0</p>
+            </div>
+            <div class="stat-box">
+                <h3>Вопрос</h3>
+                <p id="question-number">1/10</p>
+            </div>
+        </div>
+        
+        <div class="progress-bar">
+            <div class="progress" id="progress"></div>
+        </div>
+        
+        <div id="start-screen">
+            <div class="message">
+                <h2>Добро пожаловать!</h2>
+                <p>Игра состоит из 10 вопросов на каждом уровне. Для перехода на следующий уровень нужно правильно ответить на 8+ вопросов.</p>
+                <p><strong>Уровни:</strong></p>
+                <ul style="text-align: left; margin: 15px 0;">
+                    <li><strong>Начальный:</strong> Арифметические операции</li>
+                    <li><strong>Средний:</strong> + Сравнение чисел</li>
+                    <li><strong>Продвинутый:</strong> + Логические операции и двоичные числа</li>
+                </ul>
+            </div>
+            <button class="action-btn" onclick="startGame()">Начать игру</button>
+        </div>
+        
+        <div id="game-screen" class="hidden">
+            <div class="question-container">
+                <div class="question" id="question-text"></div>
+                <div class="options" id="options-container"></div>
+            </div>
+            <div id="result" class="result"></div>
+        </div>
+        
+        <div id="end-screen" class="hidden">
+            <div id="end-message" class="message"></div>
+            <div class="controls">
+                <button class="action-btn restart-btn" onclick="restartGame()">Играть снова</button>
+                <button class="action-btn exit-btn" onclick="exitGame()">Выйти</button>
+            </div>
+        </div>
+        
+        <div class="controls" id="game-controls" class="hidden">
+            <button class="action-btn restart-btn" onclick="restartGame()">Перезапуск</button>
+            <button class="action-btn exit-btn" onclick="exitGame()">Выход</button>
+        </div>
+    </div>
+
+    <script>
+        // Игровые переменные
+        let game = {
+            level: 0,
+            levels: ['Начальный', 'Средний', 'Продвинутый'],
+            currentQuestion: 0,
+            correctAnswers: 0,
+            incorrectAnswers: 0,
+            maxQuestions: 10,
+            usedQuestions: new Set(),
+            scoreToLevelUp: 0.8,
+            isPlaying: false,
+            currentAnswer: null
+        };
+
+        // Генераторы вопросов для разных уровней
+        const questionGenerators = [
+            // Уровень 1: Начальный (арифметика)
+            function() {
+                const ops = ['+', '-', '*', '/'];
+                const op = ops[Math.floor(Math.random() * ops.length)];
+                let a, b, question, answer;
+                
+                switch(op) {
+                    case '+':
+                        a = Math.floor(Math.random() * 50) + 1;
+                        b = Math.floor(Math.random() * 50) + 1;
+                        answer = a + b;
+                        question = `${a} + ${b} = ?`;
+                        break;
+                    case '-':
+                        a = Math.floor(Math.random() * 50) + 1;
+                        b = Math.floor(Math.random() * Math.min(a, 30)) + 1;
+                        answer = a - b;
+                        question = `${a} - ${b} = ?`;
+                        break;
+                    case '*':
+                        a = Math.floor(Math.random() * 12) + 1;
+                        b = Math.floor(Math.random() * 12) + 1;
+                        answer = a * b;
+                        question = `${a} × ${b} = ?`;
+                        break;
+                    case '/':
+                        b = Math.floor(Math.random() * 10) + 2;
+                        a = b * (Math.floor(Math.random() * 10) + 2);
+                        answer = a / b;
+                        question = `${a} ÷ ${b} = ?`;
+                        break;
+                }
+                
+                return { question, answer, options: generateOptions(answer) };
+            },
+            
+            // Уровень 2: Средний (арифметика + сравнение)
+            function() {
+                if (Math.random() > 0.5) {
+                    return questionGenerators[0]();
+                }
+                
+                const ops = ['>', '<', '='];
+                const op = ops[Math.floor(Math.random() * ops.length)];
+                let a = Math.floor(Math.random() * 100) + 1;
+                let b = Math.floor(Math.random() * 100) + 1;
+                let question, answer;
+                
+                switch(op) {
+                    case '>':
+                        answer = a > b;
+                        question = `${a} > ${b} ?`;
+                        break;
+                    case '<':
+                        answer = a < b;
+                        question = `${a} < ${b} ?`;
+                        break;
+                    case '=':
+                        answer = a === b;
+                        question = `${a} = ${b} ?`;
+                        break;
+                }
+                
+                return { 
+                    question, 
+                    answer, 
+                    options: ['Верно', 'Неверно'] 
+                };
+            },
+            
+            // Уровень 3: Продвинутый (логика + двоичные)
+            function() {
+                const types = ['logic', 'binary'];
+                const type = types[Math.floor(Math.random() * types.length)];
+                
+                if (type === 'logic') {
+                    const a = Math.random() > 0.5;
+                    const b = Math.random() > 0.5;
+                    const ops = ['и', 'или'];
+                    const op = ops[Math.floor(Math.random() * ops.length)];
+                    
+                    let question, answer;
+                    if (op === 'и') {
+                        answer = a && b;
+                        question = `${a ? 'Истина' : 'Ложь'} И ${b ? 'Истина' : 'Ложь'} = ?`;
+                    } else {
+                        answer = a || b;
+                        question = `${a ? 'Истина' : 'Ложь'} ИЛИ ${b ? 'Истина' : 'Ложь'} = ?`;
+                    }
+                    
+                    return { question, answer, options: ['Истина', 'Ложь'] };
+                } else {
+                    // Двоичные числа
+                    const decimal = Math.floor(Math.random() * 31) + 1;
+                    const binary = decimal.toString(2);
+                    const question = `Число ${binary}₂ в десятичной системе = ?`;
+                    
+                    return { 
+                        question, 
+                        answer: decimal, 
+                        options: generateOptions(decimal, 5) 
+                    };
+                }
+            }
+        ];
+
+        // Вспомогательные функции
+        function generateOptions(correct, count = 4) {
+            const options = new Set([correct]);
+            while (options.size < count) {
+                if (typeof correct === 'number') {
+                    const offset = Math.floor(Math.random() * 20) - 10;
+                    options.add(correct + offset);
+                } else {
+                    options.add(!correct);
+                }
+            }
+            return shuffleArray([...options]);
+        }
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        // Основные игровые функции
+        function startGame() {
+            game = {
+                level: 0,
+                levels: ['Начальный', 'Средний', 'Продвинутый'],
+                currentQuestion: 0,
+                correctAnswers: 0,
+                incorrectAnswers: 0,
+                maxQuestions: 10,
+                usedQuestions: new Set(),
+                scoreToLevelUp: 0.8,
+                isPlaying: true,
+                currentAnswer: null
+            };
+            
+            document.getElementById('start-screen').classList.add('hidden');
+            document.getElementById('game-screen').classList.remove('hidden');
+            document.getElementById('game-controls').style.display = 'block';
+            
+            updateStats();
+            generateQuestion();
+        }
+
+        function generateQuestion() {
+            if (game.currentQuestion >= game.maxQuestions) {
+                endLevel();
+                return;
+            }
+            
+            game.currentQuestion++;
+            updateStats();
+            
+            let questionData;
+            let questionId;
+            
+            do {
+                questionData = questionGenerators[game.level]();
+                questionId = `${game.level}-${questionData.question}-${questionData.answer}`;
+            } while (game.usedQuestions.has(questionId));
+            
+            game.usedQuestions.add(questionId);
+            game.currentAnswer = questionData.answer;
+            
+            document.getElementById('question-text').textContent = questionData.question;
+            document.getElementById('result').textContent = '';
+            document.getElementById('result').className = 'result';
+            
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
+            
+            questionData.options.forEach((option, index) => {
+                const button = document.createElement('button');
+                button.className = 'option-btn';
+                button.textContent = option;
+                button.onclick = () => checkAnswer(option);
+                optionsContainer.appendChild(button);
+            });
+        }
+
+        function checkAnswer(selected) {
+            let isCorrect;
+            
+            if (typeof game.currentAnswer === 'boolean') {
+                isCorrect = (selected === 'Верно' && game.currentAnswer) || 
+                           (selected === 'Неверно' && !game.currentAnswer) ||
+                           (selected === 'Истина' && game.currentAnswer) ||
+                           (selected === 'Ложь' && !game.currentAnswer);
+            } else {
+                isCorrect = selected == game.currentAnswer;
+            }
+            
+            const resultDiv = document.getElementById('result');
+            
+            if (isCorrect) {
+                game.correctAnswers++;
+                resultDiv.textContent = '✅ Правильно!';
+                resultDiv.className = 'result success';
+            } else {
+                game.incorrectAnswers++;
+                resultDiv.textContent = `❌ Неправильно! Правильный ответ: ${game.currentAnswer}`;
+                resultDiv.className = 'result error';
+            }
+            
+            updateStats();
+            
+            setTimeout(() => {
+                if (game.currentQuestion < game.maxQuestions) {
+                    generateQuestion();
+                } else {
+                    endLevel();
+                }
+            }, 1500);
+        }
+
+        function endLevel() {
+            const score = game.correctAnswers / game.maxQuestions;
+            const resultDiv = document.getElementById('end-message');
+            
+            let message = '';
+            if (score >= game.scoreToLevelUp) {
+                if (game.level < 2) {
+                    message = `
+                        <h2>🎉 Поздравляем!</h2>
+                        <p>Вы прошли ${game.levels[game.level]} уровень!</p>
+                        <p>Результат: ${game.correctAnswers} из ${game.maxQuestions} правильных ответов (${Math.round(score * 100)}%)</p>
+                        <div class="level-up">Переходим на ${game.levels[game.level + 1]} уровень!</div>
+                    `;
+                    setTimeout(() => {
+                        game.level++;
+                        game.currentQuestion = 0;
+                        game.correctAnswers = 0;
+                        game.incorrectAnswers = 0;
+                        game.usedQuestions.clear();
+                        updateStats();
+                        generateQuestion();
+                    }, 3000);
+                } else {
+                    message = `
+                        <h2>🏆 Поздравляем!</h2>
+                        <p>Вы прошли все три уровня игры!</p>
+                        <p>Финальный результат: ${game.correctAnswers} из ${game.maxQuestions} правильных ответов на продвинутом уровне</p>
+                        <p>Вы настоящий математический гений! 🎓</p>
+                    `;
+                    showEndScreen(message);
+                }
+                resultDiv.innerHTML = message;
+                document.getElementById('game-screen').classList.add('hidden');
+                document.getElementById('end-screen').classList.remove('hidden');
+            } else {
+                message = `
+                    <h2>😔 Уровень не пройден</h2>
+                    <p>На ${game.levels[game.level]} уровне вы набрали ${game.correctAnswers} из ${game.maxQuestions} (${Math.round(score * 100)}%)</p>
+                    <p>Для перехода нужно ${game.scoreToLevelUp * 100}% правильных ответов</p>
+                    <p>Попробуйте еще раз!</p>
+                `;
+                showEndScreen(message);
+            }
+        }
+
+        function showEndScreen(message) {
+            document.getElementById('end-message').innerHTML = message;
+            document.getElementById('game-screen').classList.add('hidden');
+            document.getElementById('end-screen').classList.remove('hidden');
+            document.getElementById('game-controls').style.display = 'none';
+        }
+
+        function updateStats() {
+            document.getElementById('level').textContent = game.levels[game.level];
+            document.getElementById('correct').textContent = game.correctAnswers;
+            document.getElementById('incorrect').textContent = game.incorrectAnswers;
+            document.getElementById('question-number').textContent = 
+                `${game.currentQuestion}/${game.maxQuestions}`;
+            
+            const progress = (game.currentQuestion / game.maxQuestions) * 100;
+            document.getElementById('progress').style.width = `${progress}%`;
+        }
+
+        function restartGame() {
+            document.getElementById('end-screen').classList.add('hidden');
+            startGame();
+        }
+
+        function exitGame() {
+            document.getElementById('end-screen').classList.add('hidden');
+            document.getElementById('start-screen').classList.remove('hidden');
+            document.getElementById('game-controls').style.display = 'none';
+            game.isPlaying = false;
+        }
+
+        // Инициализация игры
+        updateStats();
+    </script>
+</body>
+</html>
