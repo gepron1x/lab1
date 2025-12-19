@@ -12,8 +12,8 @@ const orderContainer = document.querySelector('#order-summary');
 const totalBlock = document.querySelector('#order-total');
 
 // Функция обновления отображения заказа
-function updateOrderDisplay() {
-
+async function updateOrderDisplay() {
+  dishes = await lazyDishes();
   const hasAnySelected = Object.values(selected).some(dish => dish !== null);
 
   if (!hasAnySelected) {

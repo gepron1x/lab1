@@ -14,7 +14,7 @@ function createCard(dish) {
   card.dataset.kind = dish.kind; // важно для фильтрации
 
   card.innerHTML = `
-    <img src="images/menu/${dish.image}.jpg" alt="${dish.name}">
+    <img src="${dish.image}" alt="${dish.name}">
     <h3>${dish.name}</h3>
     <p class="count">${dish.count}</p>
     <p class="price">${dish.price} ₽</p>
@@ -23,7 +23,7 @@ function createCard(dish) {
   return card;
 }
 
-function renderCategory(category, kind = 'all') {
+function renderCategory(category, dishes, kind = 'all') {
   const container = containers[category];
   if (!container) return;
 
@@ -42,12 +42,13 @@ function renderCategory(category, kind = 'all') {
   });
 }
 
-function renderAll() {
-  renderCategory('soup');
-  renderCategory('main-course');
-  renderCategory('salad');
-  renderCategory('drink');
-  renderCategory('dessert');
+async function renderAll() {
+  dishes = await lazyDishes();
+  renderCategory('soup', dishes);
+  renderCategory('main-course', dishes);
+  renderCategory('salad', dishes);
+  renderCategory('drink', dishes);
+  renderCategory('dessert', dishes);
 }
 
 // === ФИЛЬТРАЦИЯ ===
