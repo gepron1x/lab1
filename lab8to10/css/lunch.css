@@ -1,0 +1,248 @@
+
+.dishes-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+
+.dish-card {
+    background: white;
+    border-radius: 35px;
+    padding: 30px 40px;
+    cursor: pointer;
+    filter: drop-shadow(17px 19px 24px rgba(0, 0, 0, 0.13));
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: all 0.3s ease;
+}
+
+.dish-card img {
+    width: 100%;
+    border-radius: 35px;
+    margin-bottom: 15px;
+}
+
+.dish-card .price { font-size: 1.4rem; font-weight: 700; margin: 10px 0; }
+.dish-card .title { font-size: 1.3rem; margin: 8px 0; }
+.dish-card .weight { color: #888; margin-bottom: 15px; }
+
+.dish-card button {
+    background: #f1eee9;
+    border: none;
+    padding: 10px 30px;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-top: auto;
+    transition: background 0.3s;
+}
+
+
+.dish-card:hover {
+    border: 2px solid tomato;
+    padding: 28px 38px;
+}
+
+.dish-card.selected {
+    border: 2px solid tomato;
+}
+
+.dish-card:hover button {
+    background: tomato;
+    color: white;
+}
+
+#active { color: tomato; }
+
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+main { flex: 1; }
+
+
+@media (max-width: 800px) {
+    .dishes-grid { grid-template-columns: repeat(2, 1fr); }
+    nav { justify-content: space-between;
+          flex-direction: column;
+          align-items: center; 
+        }
+    header h1 { text-align: center; }
+}
+
+@media (max-width: 600px) {
+    .dishes-grid { grid-template-columns: 1fr; }
+    nav {
+        flex-direction: column;
+        align-items: center;
+    }
+    nav a { font-size: 1.4rem; margin: 10px 0; }
+    section h2 { text-align: center; }
+}
+
+/* Форма */
+.order-form-section {
+    max-width: 1200px;
+    margin: 60px auto;
+    padding: 0 20px;
+}
+
+.order-form-section h2 {
+    text-align: center;
+    margin-bottom: 40px;
+    font-size: 2.4rem;
+    color: #222;
+}
+
+form {
+    background: #fff;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.form-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 50px;
+}
+
+.form-block h3 {
+    margin-bottom: 25px;
+    font-size: 1.8rem;
+    color: #e63946;
+}
+
+.form-block label {
+    display: block;
+    margin: 15px 0 8px;
+    font-weight: 600;
+}
+
+.form-block input[type="text"],
+.form-block input[type="email"],
+.form-block input[type="tel"],
+.form-block input[type="time"],
+.form-block select,
+.form-block textarea {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+}
+
+.form-block textarea {
+    resize: vertical;
+}
+
+fieldset {
+    border: none;
+    padding: 0;
+    margin: 20px 0;
+}
+
+legend {
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.form-block input[type="radio"] {
+    margin-right: 8px;
+}
+
+.form-buttons {
+    margin-top: 30px;
+    display: flex;
+    gap: 20px;
+}
+
+.form-buttons button {
+    flex: 1;
+    padding: 14px;
+    font-size: 1.1rem;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.form-buttons button[type="reset"] {
+    background: #ddd;
+}
+
+.filter-btn {
+  color: green;
+  background: transparent;
+  border: 2px solid green;
+  padding: 10px 18px;
+  margin: 5px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.filter-btn:hover {
+  background-color: green;
+  color: white;
+}
+
+.filter-btn.active {
+  background-color: green;
+  color: white;
+  font-weight: bold;
+}
+
+.form-buttons button[type="submit"] {
+    background: tomato;
+    color: white;
+}
+
+.form-buttons button:hover {
+    opacity: 0.9;
+}
+
+/* Адаптивность формы */
+@media (max-width: 900px) {
+    .form-columns {
+        grid-template-columns: 1fr;
+    }
+}
+
+.checkout-panel {
+  position: sticky;
+  bottom: 0;
+  background: #2c3e50;
+  color: white;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 -2px 10px rgba(0,0,0,0.2);
+  z-index: 100;
+}
+
+.checkout-panel .panel-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#go-to-checkout {
+  background: #3498db;
+  color: white;
+  padding: 12px 30px;
+  border-radius: 8px;
+  text-decoration: none;
+}
+
+#go-to-checkout.enabled {
+  background: #27ae60;
+  cursor: pointer;
+}
+
+.btn-disabled {
+  background: #95a5a6 !important;
+  cursor: not-allowed !important;
+}
+
