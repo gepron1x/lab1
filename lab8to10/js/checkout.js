@@ -133,7 +133,7 @@ document.getElementById('checkout-form').addEventListener('submit', async (e) =>
     console.log(result);
     showNotification("Заказ успешно оформлен");
     clearOrder();
-    window.location.href = 'index.html';
+    setTimeout(() => window.location.href = 'lunch.html', 10 * 1000);
 
   } catch (err) {
     showNotification('Ошибка оформления заказа: ' + err.message);

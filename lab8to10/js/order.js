@@ -46,6 +46,13 @@ function updatePanel() {
   }
 }
 
+document.getElementById('go-to-checkout').addEventListener('click', async (e) => {
+  if(!isValidLunch()) {
+    e.preventDefault();
+  }
+  showNotification(getErrorMessage());
+});
+
 // При выборе блюда
 document.addEventListener('click', async (e) => {
   const card = e.target.closest('.dish-card');
