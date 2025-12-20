@@ -2,6 +2,9 @@ const API_BASE = 'https://edu.std-900.ist.mospolytech.ru';
 
 const API_KEY = 'e5992e19-c0fe-4ac0-9e07-8ccaa279890b';
 
+const orderContainer = document.querySelector('#checkout-summary');
+const totalBlock = document.querySelector('#checkout-total');
+
 async function renderOrderDishes() {
   const grid = document.getElementById('order-dishes-grid');
   const nothing = document.getElementById('nothing-selected');
@@ -18,7 +21,6 @@ async function renderOrderDishes() {
   grid.innerHTML = '';
 
   selectedDishes.forEach(dish => {
-    console.log(dish);
     const card = document.createElement('div');
     card.className = 'dish-card checkout-card';
     card.innerHTML = `
@@ -32,10 +34,45 @@ async function renderOrderDishes() {
   });
 }
 
+function addSummary(category, categoryName) {
+  let html = '';
+  html += `<div class="order-category"><h4>${categoryName}</h4>`;
+  html += selected[category]
+    ? `<p>${selected[category].name} — ${selected[category].price} ₽</p>`
+    : '<p class="not-selected">Блюдо не выбрано</p>';
+  html += '</div>';
+  return html;
+}
+async function updateOrderDisplay() {
+  dishes = await lazyDishes();
+  const hasAnySelected = Object.values(selected).some(dish => dish !== null);
+
+  if (!hasAnySelected) {
+    totalBlock.style.display = 'none';
+    return;
+  }
+
+  totalBlock.style.display = 'block';
+
+  let html = '';
+
+  html += addSummary("soup", "Супы");
+  html += addSummary("main-course", "Основное блюдо");
+  html += addSummary("salad", "Салат или стартер");
+  html += addSummary("drink", "Напиток");
+  html += addSummary("dessert", "Десерт");
+
+  orderContainer.innerHTML = html;
+
+  const total = Object.values(selected).reduce((sum, dish) => {
+    return sum + (dish ? dish.price : 0);
+  }, 0);
+
+  document.querySelector('#total-price').textContent = total;
+}
+
 async function updateSummary() {
-  // аналогично updateOrderDisplay, но для checkout
-  const total = Object.values(selected).reduce((s, d) => s + (d?.price || 0), 0);
-  document.getElementById('checkout-total').textContent = total;
+  await updateOrderDisplay();
   await renderOrderDishes();
 }
 
@@ -56,18 +93,18 @@ document.addEventListener('click', async (e) => {
 document.getElementById('checkout-form').addEventListener('submit', async (e) => {
   e.preventDefault();
 
-  if (!isValidCombo()) {
-    alert('Состав заказа не соответствует доступным комбо!');
+  if (!isValidLunch()) {
+    showNotification(getErrorMessage());
     return;
   }
 
   const formData = new FormData(e.target);
   const data = {
-    full_name: formData.get('full_name'),
+    full_name: formData.get('name'),
     email: formData.get('email'),
     phone: formData.get('phone'),
-    delivery_address: formData.get('delivery_address'),
-    delivery_type: formData.get('delivery_type'),
+    delivery_address: formData.get('address'),
+    delivery_type: formData.get('delivery_time'),
     comment: formData.get('comment') || '',
     subscribe: formData.get('subscribe') ? 1 : 0,
   };
@@ -93,19 +130,18 @@ document.getElementById('checkout-form').addEventListener('submit', async (e) =>
     if (!response.ok) {
       throw new Error(result.error || 'Ошибка сервера');
     }
-
-    alert('Заказ успешно оформлен!');
+    console.log(result);
+    showNotification("Заказ успешно оформлен");
     clearOrder();
     window.location.href = 'index.html';
 
   } catch (err) {
-    alert('Ошибка оформления заказа: ' + err.message);
+    showNotification('Ошибка оформления заказа: ' + err.message);
   }
 });
 
 // Инициализация
 document.addEventListener('DOMContentLoaded', async () => {
-  console.log(loadOrder());
   dishes = await lazyDishes();
   const saved = loadOrder();
   if (saved) {

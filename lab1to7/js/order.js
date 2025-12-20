@@ -151,7 +151,7 @@ document.addEventListener('click', (e) => {
 
   selected[dish.category] = dish;
 
-  updateOrderDisplay();
+  // updateOrderDisplay();
 });
 
 document.querySelector('form')?.addEventListener('submit', (e) => {

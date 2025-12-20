@@ -6,21 +6,6 @@ const selected = {
   dessert: null
 };
 
-function isValidCombo() {
-  const s = !!selected.soup;
-  const m = !!selected['main-course'];
-  const a = !!selected.salad;
-  const d = !!selected.drink;
-
-  return (
-    (s && m && a && d) ||
-    (s && m && d) ||
-    (s && a && d) ||
-    (m && a && d) ||
-    (m && d)
-  );
-}
-
 async function highlightSelected() {
   document.querySelectorAll('.dish-card').forEach(card => {
     card.classList.remove('selected');
@@ -52,7 +37,7 @@ function updatePanel() {
   const total = Object.values(selected).reduce((sum, dish) => sum + (dish?.price || 0), 0);
   totalEl.textContent = total;
 
-  if (isValidCombo()) {
+  if (isValidLunch()) {
     link.classList.remove('btn-disabled');
     link.classList.add('enabled');
   } else {

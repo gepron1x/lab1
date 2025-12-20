@@ -70,8 +70,8 @@
                     <fieldset>
                         <legend>Время доставки</legend>
 
-                        <label><input type="radio" name="delivery_time" value="asap" required> Как можно скорее</label>
-                        <label><input type="radio" name="delivery_time" value="scheduled" required> К определённому времени</label>
+                        <label><input type="radio" name="delivery_time" value="now" required> Как можно скорее</label>
+                        <label><input type="radio" name="delivery_time" value="by_time" required> К определённому времени</label>
 
                         <label for="delivery-hour">Укажите время</label>
                         <input type="time" id="delivery-hour" name="delivery_hour" min="07:00" max="23:00" step="300">
@@ -94,6 +94,7 @@
     <script src="js/storage.js"></script>
     <script src="js/loadDishes.js"></script>
     <script src="js/order.js"></script>
+    <script src="js/order_validation.js"></script>
     <script src="js/checkout.js"></script>
 </body>
 </html>
