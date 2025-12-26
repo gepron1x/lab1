@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Математическая игра</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Математическая игра</h1>
+        
+        <div id="start-screen">
+            <p>Уровни: Начальный → Средний → Продвинутый</p>
+            <p>Для перехода на следующий уровень нужно дать минимум 80% правильных ответов (8 из 10).</p>
+            <button id="start-btn">Начать игру</button>
+        </div>
+
+        <div id="game-screen" class="hidden">
+            <div class="stats">
+                <p>Уровень: <span id="level">Начальный</span></p>
+                <p>Вопрос: <span id="question-number">1</span>/10</p>
+                <p>Время: <span id="timer">3:00</span></p>
+                <p>Правильно: <span id="correct">0</span> | Неправильно: <span id="wrong">0</span></p>
+            </div>
+
+            <div class="question">
+                <h2 id="question"></h2>
+            </div>
+
+            <input type="text" id="answer" placeholder="Введите ответ" autocomplete="off">
+            <button id="submit-btn">Ответить</button>
+
+            <p id="feedback"></p>
+        </div>
+
+        <div id="result-screen" class="hidden">
+            <h2 id="result-title"></h2>
+            <p id="result-text"></p>
+            <button id="restart-btn">Играть снова</button>
+            <button id="quit-btn">Выйти</button>
+        </div>
+    </div>
+
+    <!-- Подключаем скрипты в правильном порядке -->
+    <script src="js/utils.js"></script>
+    <script src="js/questionGenerator.js"></script>
+    <script src="js/gameState.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

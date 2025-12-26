@@ -28,3 +28,8 @@ async function lazyDishes() {
   lazyInitDishes = await loadDishes();
   return lazyInitDishes;
 }
+
+async function dishById(id) {
+  dishes = await lazyDishes();
+  return dishes.find(d => d.id === id);
+}
